@@ -8,31 +8,28 @@ import { centerMapOnSite } from '../model/map';
 import List from '../components/List';
 
 class Sidebar extends Component {
+
   render() {
-    /*
-      Data should be an array of items. Each item also has items that represent the sub menu. Use the data from the redux store being passed in as props.
+      const { centerMapOnSite, projects, sites } = this.props;
+      // create map of sites objects like {idNum: siteObj}
+      const sitesIdObj = {}; //{1: {id: 1, name: "East", bounding: {…}, trees: Array(84)}, etc}
 
-      The structure of the data is:
+      for ( let i = 0; i < sites.length; i++ ) {
+          sitesIdObj[sites[i].id] = sites[i];
+      }
 
-      [
-        {
-          id: 1,
-          name: "Cypress Provincial Park",
-          items: [
-            {
-              id: 1,
-              name: 'East'
-            },
-            {
-              id: 2,
-              name: 'West'
-            }
-          ]
-        }
-      ]
-    */
+      // create new array of projects where each project gets sitesIdObj as a new property
+      const items = projects.map(project => {
+         project.siteObjs = [];
 
-    const items = [];
+         for ( let i = 0; i < project.sites.length; i++ ) {
+             const siteId = project.sites[i];
+             const siteObj = sitesIdObj[siteId];
+             project.siteObjs.push(siteObj);
+
+         }
+         return project;
+      });
 
     return <List items={ items } onClickSubitem={ this.props.centerMapOnSite } />
   }
